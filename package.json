@@ -9,11 +9,15 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node watch index.js",
+    "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@apollo/server": "^5.5.1",
-    "graphql": "^16.14.2"
+    "graphql": "^16.14.2",
+    "uuid": "^14.0.3"
+  },
+  "devDependencies": {
+    "prettier": "3.9.10"
   }
 }
