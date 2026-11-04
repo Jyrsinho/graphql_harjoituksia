@@ -1,7 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v1: uuid } = require("uuid");
-const gql = String.raw;
 
 let persons = [
   {
@@ -26,7 +25,7 @@ let persons = [
   },
 ];
 
-const typeDefs = gql`
+const typeDefs = /*GraphQL*/`
   enum YesNo {
     YES
     NO
