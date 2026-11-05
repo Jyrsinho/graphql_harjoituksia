@@ -6,7 +6,7 @@ import {useState} from "react";
 import Notification from "./components/Notification.jsx";
 
 const App = () => {
-    const [error, setError] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const result = useQuery(ALL_PERSONS )
     console.log('result- ', result)
@@ -18,11 +18,18 @@ const App = () => {
         )
     }
 
+    const notify = (message) => {
+        setErrorMessage(message)
+        setTimeout(() => {
+            setErrorMessage(null)
+        }, 10000)
+    }
+
     return (
         <div>
             <Persons persons={result.data.allPersons} />
-            <PersonForm setError={setError}/>
-            <Notification notification={error}/>
+            <PersonForm setError={notify}/>
+            <Notification notification={errorMessage}/>
         </div>
     )
 }
