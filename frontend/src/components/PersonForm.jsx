@@ -2,7 +2,7 @@ import useField from "../hooks/useField.js";
 import {useMutation} from "@apollo/client/react";
 import {ALL_PERSONS, CREATE_PERSON} from "../queries/queries.js";
 
-const PersonForm = () => {
+const PersonForm = ({setError}) => {
     const [name, resetName] = useField("text", 'name')
     const [street, resetStreet] = useField('text', 'street')
     const [city, resetCity] = useField('text', 'city')
@@ -10,6 +10,7 @@ const PersonForm = () => {
 
     const [createPerson] = useMutation(CREATE_PERSON, {
         refetchQueries: [{query: ALL_PERSONS}],
+        onError: (error) => {setError(error.message)}
     })
 
     const submit = (e) => {
