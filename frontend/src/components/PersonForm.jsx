@@ -1,6 +1,7 @@
 import useField from "../hooks/useField.js";
 import {useMutation} from "@apollo/client/react";
-import {ALL_PERSONS, CREATE_PERSON} from "../queries/queries.js";
+import {ALL_PERSONS } from "../queries/queries.js";
+import {CREATE_PERSON} from "../queries/mutations.js";
 
 const PersonForm = ({setError}) => {
     const [name, resetName] = useField("text", 'name')

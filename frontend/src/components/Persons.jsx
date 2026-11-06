@@ -20,7 +20,7 @@ export function Persons({persons}) {
         <div>
             {persons.map((person) => (
                 <div key={person.id}>
-                    <p>{person.name}</p>
+                    <p>{person.name}: {person.phone}</p>
                     <button onClick={() => setNameToSearch(person.name)}>show address</button>
                 </div>
             ))}

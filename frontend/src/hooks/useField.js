@@ -13,6 +13,7 @@ const useField = (type, label) => {
             value,
             onChange,
             label,
+            name: label
         },
         () => setValue("")
     ]
