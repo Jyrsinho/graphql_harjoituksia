@@ -20,7 +20,6 @@ const PhoneForm = ({setError}) => {
         }
     })
 
-
     const submit = (e) => {
         e.preventDefault()
         changeNumber({variables: {name: name.value, phone: phone.value}})
