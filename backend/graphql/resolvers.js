@@ -1,5 +1,7 @@
 const { GraphQLError } = require("graphql");
 const Person = require("../models/Person");
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
 let persons = [
   {
@@ -32,6 +34,7 @@ const resolvers = {
       return Person.find({ phone: { $exists: args.phone === "YES" } });
     },
     findPerson: async (root, args) => Person.findOne({ name: args.name }),
+    me: async (root, args, context) => context.currentUser,
   },
   Person: {
     address: ({ street, city }) => {
@@ -42,6 +45,34 @@ const resolvers = {
     },
   },
   Mutation: {
+    createUser: async (root, args) => {
+      const user = new User({ username: args.username });
+
+      return user.save().catch((error) => {
+        throw new GraphQLError("Creating the user failed", error, {
+          extensions: {
+            code: "BAD USER_INPUT",
+            invalidArgs: args.username,
+            error,
+          },
+        });
+      });
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username });
+      if (!user || args.password !== "secret") {
+        throw new GraphQLError("Wrong Credentials!", {
+          extensions: {
+            code: "BAD USER_INPUT",
+          },
+        });
+      }
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      };
+      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+    },
     addPerson: async (root, args) => {
       const nameExists = await Person.exists({ name: args.name });
       if (nameExists) {
