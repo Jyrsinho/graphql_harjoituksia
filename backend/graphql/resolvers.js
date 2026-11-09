@@ -73,7 +73,15 @@ const resolvers = {
       };
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
     },
-    addPerson: async (root, args) => {
+    addPerson: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      if (!currentUser) {
+        throw new GraphQLError("not authenticated", {
+          extensions: {
+            code: "Unauthenticated",
+          },
+        });
+      }
       const nameExists = await Person.exists({ name: args.name });
       if (nameExists) {
         throw new GraphQLError(`Name must be unique ${args.name}`, {
@@ -86,6 +94,8 @@ const resolvers = {
       const person = new Person({ ...args });
       try {
         await person.save();
+        currentUser.friends = currentUser.friends.concat(person);
+        await currentUser.save();
       } catch (error) {
         throw new GraphQLError(`saving Person failed: ${error.message}`, {
           extensions: {
@@ -114,6 +124,35 @@ const resolvers = {
         });
       }
       return person;
+    },
+    addAsFriend: async (root, args, { currentUser }) => {
+      if (!currentUser) {
+        throw new GraphQLError("not authenticated", {
+          extensions: {
+            code: "Unauthenticated",
+          },
+        });
+      }
+
+      const notFriendAlready = (person) => {
+        return !currentUser.friends.map((friend) =>
+          friend.id.toString().includes(person._id.toString()),
+        );
+      };
+      const person = await Person.findOne({ name: args.name });
+      if (!person) {
+        throw new GraphQLError(`The name was not found, ${args.name}`, {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+          },
+        });
+      }
+      if (notFriendAlready(person)) {
+        currentUser.friends = currentUser.friends.concat(person);
+      }
+      await currentUser.save();
+      return currentUser;
     },
   },
 };
