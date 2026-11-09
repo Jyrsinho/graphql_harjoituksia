@@ -53,14 +53,36 @@ const resolvers = {
         });
       }
       const person = new Person({ ...args });
-      return person.save();
+      try {
+        await person.save();
+      } catch (error) {
+        throw new GraphQLError(`saving Person failed: ${error.message}`, {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+            error,
+          },
+        });
+      }
+      return person;
     },
     editNumber: async (root, args) => {
       const person = await Person.findOne({ name: args.name });
       if (!person) return null;
 
       person.phone = args.phone;
-      return person.save();
+      try {
+        await person.save;
+      } catch (error) {
+        throw new GraphQLError(`saving number failed: ${error.message}`, {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+            error,
+          },
+        });
+      }
+      return person;
     },
   },
 };
