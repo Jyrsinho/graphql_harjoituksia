@@ -3,29 +3,6 @@ const Person = require("../models/Person");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-let persons = [
-  {
-    name: "Arto Hellas",
-    phone: "040-123543",
-    street: "Tapiolankatu 5 A",
-    city: "Espoo",
-    id: "3d594650-3436-11e9-bc57-8b80ba54c431",
-  },
-  {
-    name: "Matti Luukkainen",
-    phone: "040-432342",
-    street: "Malminkaari 10 A",
-    city: "Helsinki",
-    id: "3d599470-3436-11e9-bc57-8b80ba54c431",
-  },
-  {
-    name: "Venla Ruuska",
-    street: "Nallemäentie 22 C",
-    city: "Helsinki",
-    id: "3d599471-3436-11e9-bc57-8b80ba54c431",
-  },
-];
-
 const resolvers = {
   Query: {
     personCount: async () => Person.countDocuments(),
@@ -46,7 +23,9 @@ const resolvers = {
   },
   Mutation: {
     createUser: async (root, args) => {
-      const user = new User({ username: args.username });
+      const user = new User({
+        username: args.username,
+      });
 
       return user.save().catch((error) => {
         throw new GraphQLError("Creating the user failed", error, {
@@ -75,6 +54,7 @@ const resolvers = {
     },
     addPerson: async (root, args, context) => {
       const currentUser = context.currentUser;
+      console.log("addPerson currentUser - ", currentUser);
       if (!currentUser) {
         throw new GraphQLError("not authenticated", {
           extensions: {

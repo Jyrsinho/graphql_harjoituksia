@@ -16,12 +16,15 @@ const PersonForm = ({setError}) => {
 
     const submit = (e) => {
         e.preventDefault()
-        createPerson({variables: {name: name.value, street: street.value, city: city.value, phone:phone.value}})
-
-        resetName()
-        resetStreet()
-        resetCity()
-        resetPhone()
+        try {
+            createPerson({variables: {name: name.value, street: street.value, city: city.value, phone: phone.value}})
+            resetName()
+            resetStreet()
+            resetCity()
+            resetPhone()
+        }catch(err) {
+            console.log(err)
+        }
     }
 
     return (
