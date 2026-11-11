@@ -54,6 +54,7 @@ const resolvers = {
     },
     addPerson: async (root, args, context) => {
       const currentUser = context.currentUser;
+      //TODO miksi uudet ihmiset eivät päivity kirjautuneen käyttäjän kavereiksi??
       console.log("addPerson currentUser - ", currentUser);
       if (!currentUser) {
         throw new GraphQLError("not authenticated", {

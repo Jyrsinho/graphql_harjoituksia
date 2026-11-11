@@ -1,0 +1,1 @@
+miksi lisätyt henkilöt eivät päivity kirjautuneen käyttäjän kavereiksi?
