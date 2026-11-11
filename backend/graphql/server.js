@@ -3,7 +3,6 @@ const typeDefs = require("./schema.js");
 const resolvers = require("./resolvers.js");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/User");
 
 const getUserFromAuthHeader = async (auth) => {
@@ -17,6 +16,7 @@ const startServer = (port) => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
   });
 
   startStandaloneServer(server, {

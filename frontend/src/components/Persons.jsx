@@ -9,6 +9,10 @@ export function Persons({persons}) {
         variables: {nameToSearch},
         skip: !nameToSearch
     });
+    
+    console.log('Persons')
+    console.log('nameToSearch ',nameToSearch)
+    console.log('result - ', result)
 
     if (nameToSearch && result.data) {
         return (
