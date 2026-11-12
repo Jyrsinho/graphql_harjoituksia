@@ -27,7 +27,7 @@ mutation CreatePerson(
     $name: String!
     $street: String!
     $city: String!
-    $phone: String!
+    $phone: String 
 ) {
     addPerson(name: $name, street: $street, city: $city, phone: $phone ) {
         name

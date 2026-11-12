@@ -17,7 +17,13 @@ const PersonForm = ({setError}) => {
     const submit = (e) => {
         e.preventDefault()
         try {
-            createPerson({variables: {name: name.value, street: street.value, city: city.value, phone: phone.value}})
+            createPerson({
+                variables: {
+                    name: name.value,
+                    street: street.value,
+                    city: city.value,
+                    phone: phone.length > 0 ? phone.value : undefined
+                }})
             resetName()
             resetStreet()
             resetCity()
