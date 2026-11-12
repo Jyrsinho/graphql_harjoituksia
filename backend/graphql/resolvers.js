@@ -89,11 +89,17 @@ const resolvers = {
     },
     editNumber: async (root, args) => {
       const person = await Person.findOne({ name: args.name });
-      if (!person) return null;
+      if (!person) {
+        throw new GraphQLError("No such person", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
 
       person.phone = args.phone;
       try {
-        await person.save;
+        await person.save();
       } catch (error) {
         throw new GraphQLError(`saving number failed: ${error.message}`, {
           extensions: {
