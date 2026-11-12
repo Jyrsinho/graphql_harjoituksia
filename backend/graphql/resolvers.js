@@ -25,6 +25,7 @@ const resolvers = {
     createUser: async (root, args) => {
       const user = new User({
         username: args.username,
+        friends: [],
       });
 
       return user.save().catch((error) => {
@@ -54,8 +55,6 @@ const resolvers = {
     },
     addPerson: async (root, args, context) => {
       const currentUser = context.currentUser;
-      //TODO miksi uudet ihmiset eivät päivity kirjautuneen käyttäjän kavereiksi??
-      console.log("addPerson currentUser - ", currentUser);
       if (!currentUser) {
         throw new GraphQLError("not authenticated", {
           extensions: {
